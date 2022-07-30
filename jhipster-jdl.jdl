@@ -1,0 +1,62 @@
+
+application {
+  config {
+    baseName myApp,
+    applicationType gateway,
+    packageName com.myapp,
+    authenticationType jwt,
+    buildTool maven,
+    prodDatabaseType mysql,
+    clientFramework react
+  }
+  entities *
+}
+
+application {
+  config {
+    baseName storyboard,
+    applicationType microservice,
+    packageName com.myapp,
+    authenticationType jwt,
+    prodDatabaseType mysql,
+     buildTool maven
+  }
+  entities UserStory, TestCase
+}
+
+
+
+entity UserStory {
+ 	status String required
+    description String required    
+	caseID Integer 
+}
+
+entity TestCase {
+
+	caseID Integer required
+	name String required
+    summary String
+    status String required
+
+}
+enum StatusTestCase {
+    PASS, FAIL, NOTESTED ,REJECTED
+}
+enum StatusUserStory {
+    CREATED, WIP, COMPLTED
+}
+
+
+
+
+relationship OneToMany {
+  UserStory{userstory(caseID)} to TestCase
+}
+relationship ManyToOne {
+    TestCase{testcase(caseID) required} to UserStory
+}
+service TestCase, UserStory with serviceClass
+
+paginate TestCase, UserStory with pagination
+    
